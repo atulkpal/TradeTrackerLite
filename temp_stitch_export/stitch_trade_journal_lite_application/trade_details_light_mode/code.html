@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trade Details - Trade Journal Lite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f0f4f8",
+                        "on-tertiary-fixed": "#251a00",
+                        "tertiary-container": "#fff1cc",
+                        "on-secondary-container": "#001d4a",
+                        "on-primary-container": "#1d2635",
+                        "tertiary-fixed-dim": "#f7be1d",
+                        "inverse-on-surface": "#f0f4f8",
+                        "outline": "#74777f",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fcfcff",
+                        "surface-variant": "#e1e2ec",
+                        "on-secondary-fixed": "#001a42",
+                        "primary-fixed": "#dae2fd",
+                        "surface-dim": "#d9e3f1",
+                        "on-tertiary-container": "#241a00",
+                        "on-surface-variant": "#44474f",
+                        "primary": "#0566d9",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#5a4300",
+                        "surface-tint": "#0566d9",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "inverse-surface": "#2e3135",
+                        "on-error": "#ffffff",
+                        "on-background": "#191c1e",
+                        "tertiary-fixed": "#ffdf9a",
+                        "secondary": "#3f5f90",
+                        "tertiary": "#765a00",
+                        "surface-container-high": "#e2e8f0",
+                        "on-surface": "#191c1e",
+                        "background": "#f8fafc",
+                        "primary-fixed-dim": "#bec6e0",
+                        "outline-variant": "#c4c6d0",
+                        "surface-container-highest": "#dae2ed",
+                        "surface": "#f8fafc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#eff1f8",
+                        "primary-container": "#dbe2f9",
+                        "on-primary-fixed": "#131b2e",
+                        "on-error-container": "#410002",
+                        "secondary-container": "#d8e2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "container-margin": "16px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "data-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #191c1e; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface flex items-center justify-between px-container-margin h-16 transition-all border-b border-outline-variant/30">
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-colors">arrow_back</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Trade Details</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-variant/50 rounded-full transition-colors">share</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-variant/50 rounded-full transition-colors">edit</button>
+</div>
+</header>
+<main class="pt-20 px-container-margin max-w-4xl mx-auto space-y-md">
+<!-- Profit Highlight Hero Section -->
+<div class="bg-surface-container rounded-xl p-lg flex flex-col items-center justify-center text-center space-y-sm shadow-sm">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">currency_bitcoin</span>
+<span class="font-label-md text-label-md text-on-surface-variant">BTC / USD</span>
+</div>
+<div class="text-[56px] font-bold text-[#15803d] tracking-tight">
+                +$850.00
+            </div>
+<div class="flex gap-sm">
+<span class="px-md py-1 bg-[#dcfce7] text-[#15803d] rounded-full text-label-md font-bold">+4.2%</span>
+<span class="px-md py-1 bg-surface-variant text-on-surface-variant rounded-full text-label-md font-medium">12h 45m Duration</span>
+</div>
+</div>
+<!-- Entry/Exit Cards - Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Entry Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md flex flex-col space-y-sm">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Entry</span>
+<span class="material-symbols-outlined text-primary">login</span>
+</div>
+<div class="space-y-xs">
+<div class="font-data-lg text-data-lg text-on-surface">$42,150.00</div>
+<div class="font-body-md text-sm text-on-surface-variant">Oct 24, 2023 • 08:30 AM</div>
+</div>
+<div class="pt-sm border-t border-outline-variant/20 flex justify-between">
+<span class="text-xs text-on-surface-variant">Size: 0.5 BTC</span>
+<span class="text-xs text-on-surface-variant">Fee: $12.45</span>
+</div>
+</div>
+<!-- Exit Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md flex flex-col space-y-sm">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Exit</span>
+<span class="material-symbols-outlined text-[#15803d]">logout</span>
+</div>
+<div class="space-y-xs">
+<div class="font-data-lg text-data-lg text-on-surface">$43,850.00</div>
+<div class="font-body-md text-sm text-on-surface-variant">Oct 24, 2023 • 09:15 PM</div>
+</div>
+<div class="pt-sm border-t border-outline-variant/20 flex justify-between">
+<span class="text-xs text-on-surface-variant">Type: Limit Order</span>
+<span class="text-xs text-on-surface-variant">Slippage: 0.01%</span>
+</div>
+</div>
+</div>
+<!-- Execution Chart Area -->
+<div class="relative bg-white rounded-xl border border-outline-variant/50 overflow-hidden h-72 shadow-sm">
+<div class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-md border border-outline-variant/30 px-3 py-1.5 rounded-lg">
+<span class="font-label-md text-xs font-bold text-on-surface">Execution Timeline</span>
+</div>
+<!-- Mock Chart Visualization -->
+<div class="absolute inset-0 flex items-end px-md pb-md gap-2">
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[40%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[45%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[60%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[55%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[75%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[90%] transition-all hover:bg-primary/20 relative">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] px-2 py-0.5 rounded">EXIT</div>
+</div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[85%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[70%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[60%] transition-all hover:bg-primary/20"></div>
+<div class="flex-1 bg-primary/10 rounded-t-sm h-[65%] transition-all hover:bg-primary/20"></div>
+</div>
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between p-md opacity-20 pointer-events-none">
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+</div>
+</div>
+<!-- Trade Notes -->
+<div class="space-y-sm">
+<h2 class="font-title-md text-title-md text-on-surface px-1">Trade Notes</h2>
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md">
+<p class="font-body-md text-on-surface leading-relaxed">
+                    Entered based on a 4-hour bull flag breakout with high relative volume. The $42k level held as strong support. Initial target was $43.5k, but momentum was strong enough to push for $43.8k exit before New York close. 
+                    <br/><br/>
+                    Avoided early exit during the mid-day chop by trusting the higher timeframe structure.
+                </p>
+</div>
+</div>
+<!-- Emotional State & Tags -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-sm">
+<h3 class="font-label-md text-xs text-on-surface-variant uppercase px-1">Execution Mindset</h3>
+<div class="bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-md flex items-center gap-md">
+<div class="text-4xl">🎯</div>
+<div>
+<div class="font-title-md text-on-surface">Disciplined</div>
+<div class="text-xs text-on-surface-variant">Followed the plan 100%</div>
+</div>
+</div>
+</div>
+<div class="space-y-sm">
+<h3 class="font-label-md text-xs text-on-surface-variant uppercase px-1">Strategic Tags</h3>
+<div class="flex flex-wrap gap-xs">
+<span class="px-md py-2 bg-surface-container text-on-surface-variant rounded-lg text-sm font-medium border border-outline-variant/30">#TrendFollow</span>
+<span class="px-md py-2 bg-surface-container text-on-surface-variant rounded-lg text-sm font-medium border border-outline-variant/30">#Breakout</span>
+<span class="px-md py-2 bg-surface-container text-on-surface-variant rounded-lg text-sm font-medium border border-outline-variant/30">#HighConviction</span>
+<span class="px-md py-2 bg-primary/10 text-primary rounded-lg text-sm font-bold border border-primary/20">+ Add Tag</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Filtered for light mode) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container flex justify-around items-center h-20 px-sm pb-safe shadow-[0_-4px_12px_rgba(0,0,0,0.05)] border-t border-outline-variant/10">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-[10px] mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1 active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-[10px] mt-1">Analytics</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-[10px] mt-1">AI Insights</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-[10px] mt-1">Settings</span>
+</div>
+</nav>
+<!-- Floating Action Button - Contextual Suppression Check: Active on main screens, but for details we might hide it. Let's keep it for "Add Note" context -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<script>
+        // Simple interaction for the chart bars
+        document.querySelectorAll('.flex-1.bg-primary\\/10').forEach(bar => {
+            bar.addEventListener('mouseenter', () => {
+                bar.style.height = (parseInt(bar.style.height) + 5) + '%';
+            });
+            bar.addEventListener('mouseleave', () => {
+                bar.style.height = (parseInt(bar.style.height) - 5) + '%';
+            });
+        });
+    </script>
+</body></html>

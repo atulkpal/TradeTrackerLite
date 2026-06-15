@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Insights - Trade Journal Lite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sparkline-gradient {
+            fill: url(#gradient-success);
+            fill-opacity: 0.1;
+        }
+        .sparkline-gradient-error {
+            fill: url(#gradient-error);
+            fill-opacity: 0.1;
+        }
+        /* Custom Light Mode Overrides for this specific screen */
+        .light .bg-surface { background-color: #F8FAFC; }
+        .light .text-primary { color: #0F172A; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#ffffff",
+                        "on-tertiary-fixed": "#251a00",
+                        "tertiary-container": "#fffbeb",
+                        "on-secondary-container": "#0F172A",
+                        "on-primary-container": "#475569",
+                        "tertiary-fixed-dim": "#f7be1d",
+                        "inverse-on-surface": "#f1f5f9",
+                        "outline": "#cbd5e1",
+                        "secondary-fixed": "#e2e8f0",
+                        "secondary-fixed-dim": "#cbd5e1",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#94a3b8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#334155",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#ffffff",
+                        "surface-variant": "#f1f5f9",
+                        "on-secondary-fixed": "#0f172a",
+                        "primary-fixed": "#e2e8f0",
+                        "surface-dim": "#f8fafc",
+                        "on-tertiary-container": "#b45309",
+                        "on-surface-variant": "#64748b",
+                        "primary": "#0F172A",
+                        "error-container": "#fef2f2",
+                        "on-tertiary-fixed-variant": "#92400e",
+                        "surface-tint": "#0F172A",
+                        "error": "#ef4444", /* Coral accent for negative */
+                        "on-error": "#ffffff",
+                        "on-background": "#0f172a",
+                        "tertiary-fixed": "#fef3c7",
+                        "secondary": "#0566d9", /* Blue accent for positive */
+                        "tertiary": "#f59e0b",
+                        "surface-container-high": "#f1f5f9",
+                        "on-surface": "#0f172a",
+                        "background": "#F8FAFC",
+                        "primary-fixed-dim": "#cbd5e1",
+                        "outline-variant": "#e2e8f0",
+                        "surface-container-highest": "#e2e8f0",
+                        "surface": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#f8fafc",
+                        "primary-container": "#f1f5f9",
+                        "on-primary-fixed": "#0f172a",
+                        "on-error-container": "#991b1b",
+                        "secondary-container": "#e0f2fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "12px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "container-margin": "16px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "data-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface px-container-margin h-16 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-md">
+<img alt="Trader Profile" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="A professional headshot of a young financial analyst with a neutral expression, set against a blurred modern office background with soft daylight. The image has a clean, high-key lighting style that fits a modern corporate aesthetic, using a soft palette of whites and light blues. The mood is sophisticated and professional, emphasizing a high-fidelity digital banking experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVsf3xINSv0leW6TsR0cP4MjJ2gJ0FEYPFbhPkHvg8goITVcwku8_BQRtJP0g4_0Iky7xZST5TI3rmfGEtWlqcIlSH2JnzholcBV3glA6Xc1UUMFGx51tY6lVy1ikyAMts7XYhzlOtk_e5F3fIHQcTXxELNFNQpAizy1GU5JGZcGFBSakYMCmyTp083RxXYMll9mbyVHmUOGsduVpwVJ2ui3mEhvmc5wIgAxV6eCnuAVfdmwioJ4aaVXmr2OsUyuhenL7RoiCs1q4"/>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Trade Journal Lite</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</header>
+<main class="pt-20 px-container-margin max-w-5xl mx-auto space-y-md">
+<!-- AI Intelligence Recommendation Card -->
+<section class="bg-secondary-container p-md rounded-xl shadow-sm border border-secondary/10 flex flex-col md:flex-row gap-md items-start">
+<div class="bg-white p-sm rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div class="flex-1">
+<h2 class="font-title-md text-title-md text-on-secondary-container mb-xs">AI Intelligence Recommendation</h2>
+<p class="font-body-md text-body-md text-on-primary-container leading-relaxed">
+                    Based on your last 50 trades, your <span class="font-bold text-secondary">Breakout Strategy</span> performs 24% better between <span class="font-bold">09:30 AM and 11:00 AM EST</span>. We recommend narrowing your trading window to these peak volatility hours.
+                </p>
+<div class="mt-md flex gap-sm">
+<button class="bg-secondary text-on-secondary px-md py-sm rounded-lg font-label-md hover:opacity-90 transition-all">Apply Filter</button>
+<button class="border border-secondary/20 text-secondary px-md py-sm rounded-lg font-label-md hover:bg-secondary/5 transition-all">Analyze Why</button>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Insights -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Best Performing Setup -->
+<div class="bg-surface p-md rounded-xl border border-outline-variant flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-md text-on-surface-variant uppercase tracking-wider">Best Performing Setup</span>
+<span class="material-symbols-outlined text-secondary">star</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-primary mb-xs">Bullish Engulfing</h3>
+<p class="font-body-md text-on-surface-variant">Win Rate: <span class="text-secondary font-bold">72.4%</span> over 15 trades.</p>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant flex gap-md">
+<div>
+<p class="font-label-md text-on-surface-variant">Avg Profit</p>
+<p class="font-data-lg text-data-lg text-secondary">+$420.50</p>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Profit Factor</p>
+<p class="font-data-lg text-data-lg">2.84</p>
+</div>
+</div>
+</div>
+<!-- Focus on Discipline Alert -->
+<div class="bg-error-container p-md rounded-xl border border-error/10 flex flex-col">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h3 class="font-title-md text-title-md text-on-error-container">Focus on Discipline</h3>
+</div>
+<p class="font-body-md text-on-error-container/80 mb-md">
+                    "Revenge Trading" detected. After a loss >$200, your subsequent win rate drops to 12%.
+                </p>
+<div class="mt-auto bg-white/50 p-sm rounded-lg border border-error/5">
+<p class="font-label-md text-on-error-container">Pro Tip: Take a 15-minute break after any loss greater than $150 to reset emotional state.</p>
+</div>
+</div>
+</div>
+<!-- Winning/Losing Patterns with Sparklines -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Winning Pattern -->
+<div class="bg-surface p-md rounded-xl border border-outline-variant">
+<h3 class="font-title-md text-title-md mb-md flex items-center justify-between">
+                    Winning Patterns
+                    <span class="text-secondary font-label-md">+12.4% Trend</span>
+</h3>
+<div class="h-24 w-full relative">
+<!-- SVG Sparkline -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 100">
+<defs>
+<lineargradient id="gradient-success" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#0566d9;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#0566d9;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path class="sparkline-gradient" d="M0,80 Q50,70 100,75 T200,40 T300,50 T400,20 L400,100 L0,100 Z" fill="url(#gradient-success)"></path>
+<path d="M0,80 Q50,70 100,75 T200,40 T300,50 T400,20" fill="none" stroke="#0566d9" stroke-width="2.5"></path>
+</svg>
+</div>
+<div class="mt-sm space-y-xs">
+<div class="flex justify-between font-label-md">
+<span class="text-on-surface-variant">Vwap Bounce</span>
+<span class="text-secondary">8 Wins</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<!-- Losing Pattern -->
+<div class="bg-surface p-md rounded-xl border border-outline-variant">
+<h3 class="font-title-md text-title-md mb-md flex items-center justify-between">
+                    Losing Patterns
+                    <span class="text-error font-label-md">-8.2% Trend</span>
+</h3>
+<div class="h-24 w-full relative">
+<!-- SVG Sparkline -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 100">
+<defs>
+<lineargradient id="gradient-error" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#ef4444;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path class="sparkline-gradient-error" d="M0,20 Q50,40 100,30 T200,70 T300,60 T400,85 L400,100 L0,100 Z" fill="url(#gradient-error)"></path>
+<path d="M0,20 Q50,40 100,30 T200,70 T300,60 T400,85" fill="none" stroke="#ef4444" stroke-width="2.5"></path>
+</svg>
+</div>
+<div class="mt-sm space-y-xs">
+<div class="flex justify-between font-label-md">
+<span class="text-on-surface-variant">Over-leveraged Scalp</span>
+<span class="text-error">12 Losses</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 65%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Strategy Lab Trends Bar Chart -->
+<section class="bg-surface p-md rounded-xl border border-outline-variant">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h3 class="font-title-md text-title-md">Strategy Lab Trends</h3>
+<p class="font-body-md text-on-surface-variant">Weekly performance by asset class</p>
+</div>
+<div class="flex bg-surface-container-high rounded-lg p-1">
+<button class="px-sm py-1 font-label-md bg-white shadow-sm rounded-md text-primary">Crypto</button>
+<button class="px-sm py-1 font-label-md text-on-surface-variant">Forex</button>
+<button class="px-sm py-1 font-label-md text-on-surface-variant">Stocks</button>
+</div>
+</div>
+<div class="flex items-end justify-between h-48 gap-xs">
+<!-- Bar 1 -->
+<div class="flex-1 flex flex-col items-center gap-sm">
+<div class="w-full bg-secondary/80 rounded-t-sm" style="height: 60%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Mon</span>
+</div>
+<!-- Bar 2 -->
+<div class="flex-1 flex flex-col items-center gap-sm">
+<div class="w-full bg-secondary/80 rounded-t-sm" style="height: 45%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Tue</span>
+</div>
+<!-- Bar 3 -->
+<div class="flex-1 flex flex-col items-center gap-sm">
+<div class="w-full bg-error/80 rounded-t-sm" style="height: 30%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Wed</span>
+</div>
+<!-- Bar 4 -->
+<div class="flex-1 flex flex-col items-center gap-sm">
+<div class="w-full bg-secondary/80 rounded-t-sm" style="height: 85%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Thu</span>
+</div>
+<!-- Bar 5 -->
+<div class="flex-1 flex flex-col items-center gap-sm">
+<div class="w-full bg-secondary/80 rounded-t-sm" style="height: 70%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Fri</span>
+</div>
+<!-- Bar 6 -->
+<div class="flex-1 flex flex-col items-center gap-sm opacity-30">
+<div class="w-full bg-surface-container-highest rounded-t-sm" style="height: 10%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Sat</span>
+</div>
+<!-- Bar 7 -->
+<div class="flex-1 flex flex-col items-center gap-sm opacity-30">
+<div class="w-full bg-surface-container-highest rounded-t-sm" style="height: 10%"></div>
+<span class="font-label-md text-xs text-on-surface-variant">Sun</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container rounded-t-xl h-20 px-sm pb-safe flex justify-around items-center shadow-lg">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md mt-1">Analytics</span>
+</button>
+<!-- Active Nav -->
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1 active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-label-md text-label-md">AI Insights</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md mt-1">Settings</span>
+</button>
+</nav>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('opacity-80');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('opacity-80');
+            });
+        });
+    </script>
+</body></html>
