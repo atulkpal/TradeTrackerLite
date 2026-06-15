@@ -1,6 +1,7 @@
 package com.atulpal.tradetrackerlite.ui.trade
 
 import androidx.lifecycle.*
+import com.atulpal.tradetrackerlite.data.local.entity.UserProfileEntity
 import com.atulpal.tradetrackerlite.data.local.entity.TradeEntity
 import com.atulpal.tradetrackerlite.data.repository.TradeRepository
 import kotlinx.coroutines.flow.SharingStarted
@@ -9,6 +10,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class TradeViewModel(private val repository: TradeRepository) : ViewModel() {
+
+    val userProfile: StateFlow<UserProfileEntity?> = repository.userProfile.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
     val allTrades: StateFlow<List<TradeEntity>> = repository.allTrades.stateIn(
         scope = viewModelScope,

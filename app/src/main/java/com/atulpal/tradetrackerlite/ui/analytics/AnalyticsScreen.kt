@@ -7,12 +7,13 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.atulpal.tradetrackerlite.ui.components.BentoSummaryCard
 import com.atulpal.tradetrackerlite.ui.theme.DangerRed
 import com.atulpal.tradetrackerlite.ui.theme.DarkSecondary
 import com.atulpal.tradetrackerlite.ui.theme.DarkTertiary
+import com.atulpal.tradetrackerlite.utils.CurrencyUtils
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,6 +21,8 @@ fun AnalyticsScreen(
     viewModel: AnalyticsViewModel
 ) {
     val state by viewModel.analyticsState.collectAsState()
+    val userProfile by viewModel.userProfile.collectAsState()
+    val currencySymbol = CurrencyUtils.getCurrencySymbol(userProfile?.preferredCurrency)
 
     Scaffold(
         topBar = {
@@ -61,7 +64,7 @@ fun AnalyticsScreen(
                     )
                     BentoSummaryCard(
                         label = "Profit Factor",
-                        value = String.format("%.2f", state.profitFactor),
+                        value = String.format(Locale.US, "%.2f", state.profitFactor),
                         modifier = Modifier.weight(1f),
                         subValue = "Ideal: > 2.0",
                         subValueColor = DarkTertiary
@@ -76,14 +79,14 @@ fun AnalyticsScreen(
                 ) {
                     BentoSummaryCard(
                         label = "Avg Profit",
-                        value = "$${String.format("%.0f", state.avgProfit)}",
+                        value = "$currencySymbol${String.format(Locale.US, "%.0f", state.avgProfit)}",
                         modifier = Modifier.weight(1f),
                         subValue = "Per Winning Trade",
                         subValueColor = DarkSecondary
                     )
                     BentoSummaryCard(
                         label = "Avg Loss",
-                        value = "$${String.format("%.0f", state.avgLoss)}",
+                        value = "$currencySymbol${String.format(Locale.US, "%.0f", state.avgLoss)}",
                         modifier = Modifier.weight(1f),
                         subValue = "Per Losing Trade",
                         subValueColor = DangerRed

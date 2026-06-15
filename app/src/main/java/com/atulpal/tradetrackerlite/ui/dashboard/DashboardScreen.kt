@@ -19,6 +19,7 @@ import com.atulpal.tradetrackerlite.ui.components.TradeCard
 import com.atulpal.tradetrackerlite.ui.onboarding.OnboardingViewModel
 import com.atulpal.tradetrackerlite.ui.theme.DarkTertiary
 import com.atulpal.tradetrackerlite.ui.trade.TradeViewModel
+import com.atulpal.tradetrackerlite.utils.CurrencyUtils
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,16 +33,7 @@ fun DashboardScreen(
     val trades by viewModel.allTrades.collectAsState()
     val userProfile by onboardingViewModel.userProfile.collectAsState()
     
-    val currencySymbol = when(userProfile?.preferredCurrency) {
-        "INR" -> "₹"
-        "USD" -> "$"
-        "EUR" -> "€"
-        "GBP" -> "£"
-        "JPY" -> "¥"
-        "AED" -> "DH"
-        "SGD" -> "S$"
-        else -> "₹"
-    }
+    val currencySymbol = CurrencyUtils.getCurrencySymbol(userProfile?.preferredCurrency)
 
     // Simple summary calculations
     val totalPL = trades.sumOf { (it.exitPrice - it.entryPrice) * it.quantity * (if (it.side == "Buy") 1 else -1) }

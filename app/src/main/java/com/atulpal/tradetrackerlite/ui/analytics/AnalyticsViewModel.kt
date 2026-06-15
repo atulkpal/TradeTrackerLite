@@ -1,6 +1,7 @@
 package com.atulpal.tradetrackerlite.ui.analytics
 
 import androidx.lifecycle.*
+import com.atulpal.tradetrackerlite.data.local.entity.UserProfileEntity
 import com.atulpal.tradetrackerlite.data.local.entity.TradeEntity
 import com.atulpal.tradetrackerlite.data.repository.TradeRepository
 import kotlinx.coroutines.flow.*
@@ -15,6 +16,12 @@ data class AnalyticsState(
 )
 
 class AnalyticsViewModel(private val repository: TradeRepository) : ViewModel() {
+
+    val userProfile: StateFlow<UserProfileEntity?> = repository.userProfile.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
     val analyticsState: StateFlow<AnalyticsState> = repository.allTrades
         .map { trades ->

@@ -5,9 +5,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +19,8 @@ import com.atulpal.tradetrackerlite.ui.theme.DangerRed
 import com.atulpal.tradetrackerlite.ui.theme.DataLarge
 import com.atulpal.tradetrackerlite.ui.theme.DarkTertiary
 import com.atulpal.tradetrackerlite.ui.theme.SuccessGreen
+import com.atulpal.tradetrackerlite.utils.CurrencyUtils
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,6 +31,8 @@ fun TradeDetailsScreen(
     onNavigateBack: () -> Unit
 ) {
     var trade by remember { mutableStateOf<TradeEntity?>(null) }
+    val userProfile by viewModel.userProfile.collectAsState()
+    val currencySymbol = CurrencyUtils.getCurrencySymbol(userProfile?.preferredCurrency)
     
     LaunchedEffect(tradeId) {
         trade = viewModel.getTradeById(tradeId)
@@ -90,7 +94,7 @@ fun TradeDetailsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            "${if (isProfit) "+" else ""}$${String.format("%.2f", pl)}",
+                            "${if (isProfit) "+" else ""}$currencySymbol${String.format(Locale.US, "%.2f", pl)}",
                             style = DataLarge.copy(fontSize = 40.sp),
                             color = if (isProfit) DarkTertiary else DangerRed
                         )
@@ -99,13 +103,13 @@ fun TradeDetailsScreen(
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Icon(
-                                Icons.Default.TrendingUp,
+                                Icons.AutoMirrored.Filled.TrendingUp,
                                 contentDescription = null,
                                 tint = if (isProfit) SuccessGreen else DangerRed,
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                "${String.format("%.1f", roi)}%",
+                                "${String.format(Locale.US, "%.1f", roi)}%",
                                 style = MaterialTheme.typography.titleMedium,
                                 color = if (isProfit) SuccessGreen else DangerRed
                             )
@@ -116,8 +120,8 @@ fun TradeDetailsScreen(
                 // Metrics Grid
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        MetricCard("Entry Price", "$${t.entryPrice}", Modifier.weight(1f))
-                        MetricCard("Exit Price", "$${t.exitPrice}", Modifier.weight(1f))
+                        MetricCard("Entry Price", "$currencySymbol${t.entryPrice}", Modifier.weight(1f))
+                        MetricCard("Exit Price", "$currencySymbol${t.exitPrice}", Modifier.weight(1f))
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         MetricCard("Quantity", t.quantity.toString(), Modifier.weight(1f))
